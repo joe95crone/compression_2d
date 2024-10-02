@@ -23,6 +23,16 @@ class Optimisation_Functions:
                return np.sqrt(np.mean(self.tracked_beam[self.pos][0]**2))/(constants.c*constants.femto) 
         else:
             return np.sqrt(np.mean(self.tracked_beam[self.pos][0]**2))/(constants.c*constants.femto)
+        
+    # optimizing for minimum full width bunch duration or to specific value at FEL
+    def fw_t_opt(self):
+        if self.settings.get('p_vals') != None:
+            if self.settings.get('p_vals').get('p_fwt') != None:
+                return abs(self.settings.get('p_vals').get('p_fwt')/constants.femto - (max(self.tracked_beam[self.pos][0])-min(self.tracked_beam[self.pos][0]))/(constants.c*constants.femto))
+            else:
+               return (max(self.tracked_beam[self.pos][0])-min(self.tracked_beam[self.pos][0]))/(constants.c*constants.femto) 
+        else:
+            return (max(self.tracked_beam[self.pos][0])-min(self.tracked_beam[self.pos][0]))/(constants.c*constants.femto)
 
     # optimizing for minimum energy spread or to specific value at FEL
     def sig_e_opt(self):

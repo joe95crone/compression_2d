@@ -76,7 +76,7 @@ if __name__ == "__main__":
     # settings values optimisation type, position & penalty function values passed as a dictionary
     # position and penalty vals are optional {'obj_func': <type>, <'pos': <pos>>, <'p_vals':{'p_sig': <pen_val>}>}
     #pvals = {'pos': -1, 'p_sigt': 20e-15, 'p_sige': 1e-5}
-    settings = {'obj_func': 'sig_t', 'pos': -1, 'p_vals': {'p_sigt': 2000e-15,'p_sige': 1e-5}}
+    settings = {'obj_func': 'fw_t', 'pos': -1, 'p_vals': {'p_fwt': 20e-12,'p_sige': 1e-5}}
 
     # if no penalty function values are passed in the arguments then minimises the objective function
     result = minimize(UKXFEL_tracker.opt_func, UKXFEL_tracker.initial_guess(), args = (settings), method = 'Nelder-Mead', bounds = UKXFEL_bounds, options = {'maxiter':2e4, 'fatol':0.01})

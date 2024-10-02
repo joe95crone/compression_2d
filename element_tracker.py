@@ -95,6 +95,10 @@ class Element_Track:
             # reset the beam
             self.beam = self.init_beam
             return ofun.sig_t_opt()
+        elif settings.get('obj_func') == "fw_t":
+            # reset the beam
+            self.beam = self.init_beam
+            return ofun.fw_t_opt()
         elif settings.get('obj_func') == "sig_e":
             self.beam = self.init_beam
             return ofun.sig_e_opt()

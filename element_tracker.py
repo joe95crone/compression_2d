@@ -87,31 +87,13 @@ class Element_Track:
             for parameter in list(getattr(self.beamline_dict, element).keys())[1:]:
                 setattr(getattr(self.beamline_dict, element), parameter, args[j])
                 j+=1
-        #print(np.sqrt(np.mean(tracked_beam[len(tracked_beam)-1][0]**2))/(constants.c*constants.femto))
-        # this next step can be called as a function - have defined optimisatons I, sig_e, sig_t + combined functions (adding in quadrature)
+        # call the optimisation function class
         ofun = ofunc.Optimisation_Functions(self.track_1D(), settings)
-        
-        if settings.get('obj_func') == "sig_t":
-            # reset the beam
-            self.beam = self.init_beam
-            return ofun.sig_t_opt()
-        elif settings.get('obj_func') == "fw_t":
-            # reset the beam
-            self.beam = self.init_beam
-            return ofun.fw_t_opt()
-        elif settings.get('obj_func') == "sig_e":
-            self.beam = self.init_beam
-            return ofun.sig_e_opt()
-        elif settings.get('obj_func') =='Ipk':
-            self.beam = self.init_beam
-            return ofun.Ipk_opt(self.Q)
-        elif settings.get('obj_func') == "sig_t_e" or "sig_e_t":
-            self.beam = self.init_beam
-            return ofun.sig_t_e_opt()
-        else:
-            print("please enter a correct optimisation type")
-
+        # reset the beam
+        self.beam = self.init_beam
+        return ofun.get_opt_func_val()
     
+    # create the initial guess for the optimisation
     def initial_guess(self):
         params = []
         for element in list(self.beamline_dict.keys()):

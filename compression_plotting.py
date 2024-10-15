@@ -2,6 +2,7 @@
 
 import numpy as np
 from scipy import constants
+from scipy import stats
 from matplotlib import pyplot as plt
 
 # may be a few more arguments for peak charge calculation etc.
@@ -89,6 +90,24 @@ class Track_Plot:
             plt.savefig(filename)
         plt.draw()
         return beam_Ipk
+
+    # calculate the Pearson correlation coefficient throughout the FEL
+    def beam_linearity_plt(self):
+        pearson_linearity = []
+        for ele in range(len(self.tracked_beam)):
+            pearson_linearity.append(stats.pearsonr(self.tracked_beam[ele][0], self.tracked_beam[ele][1], alternative = 'two-sided').statistic)
+        pearson_linearity = np.insert(pearson_linearity, 0, stats.pearsonr(self.init_beam[0], self.init_beam[1], alternative = 'two-sided').statistic, axis=0)
+        plt.figure()
+        plt.plot(self.beamline, pearson_linearity, label=self.label)
+        plt.title(self.label + " Beamline LPS Linearity")
+        plt.xlabel("Element")
+        plt.ylabel("Pearson Correlation Coefficient")
+        plt.legend()
+        if self.save_plots == True:
+            filename = 'FIGS\\' + self.label + '_linearity' + '.png'
+            plt.savefig(filename)
+        plt.draw()
+        return pearson_linearity
 
     def beam_sigt_sige_phase_space(self, position=-1):
         plt.figure()
